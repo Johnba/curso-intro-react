@@ -48,14 +48,55 @@ function App() {
       <TodoHeader>
           <TodoCounter 
               totalTodos={totalTodos} 
-              completedTodos={completedTodos} />
+              completedTodos={completedTodos}
+              loading={loading} />
 
           <TodoSearch 
               searchValue={searchValue} 
-              setSearchValue={setSearchValue} />
+              setSearchValue={setSearchValue}
+              loading={loading} />
       </TodoHeader>
 
-      <TodoList>
+     {/* Enviamos Render Props */}
+      <TodoList 
+        error={error}
+        loading={loading}
+        totalTodos={totalTodos}
+        searchedTodos={searchedTodos}
+        searchText={searchValue}
+        onError={()=> <TodosError />}
+        onLoading={()=> <TodosLoading />}
+        onEmptyTodos={()=> <EmptyTodos />}
+        onEmptySearchResults={
+          (searchText)=> <p>No hay resultados para {searchText}</p>
+        }
+
+        // Esta es euna RENDER PROPS:
+        // render={todo => (
+        //   <TodoItem
+        //     key={todo.text}
+        //     text={todo.text}
+        //     completed={todo.completed}
+        //     onComplete={() => completeTodo(todo.text)}
+        //     onDelete={() => deleteTodo(todo.text)}
+        //   />
+        // )}
+      >
+
+        {/*Esta es una RENDER FUNCTION: */}
+        {todo => (
+          <TodoItem
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
+          />
+        )}
+
+      </TodoList>
+
+      {/* <TodoList>
         {error && <TodosError />}
         {loading && <TodosLoading />}
         {(!loading && !searchedTodos.length) && <EmptyTodos />}
@@ -69,7 +110,7 @@ function App() {
             onDelete={() => deleteTodo(todo.text)}
           />
         ))}
-      </TodoList>
+      </TodoList> */}
 
       {!!openModal && (
         <Modal>
